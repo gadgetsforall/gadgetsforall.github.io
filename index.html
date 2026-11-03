@@ -3,29 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Comparador de productos AliExpress</title>
-  <meta name="description" content="Herramienta personal para comparar productos de AliExpress por precio, valoración, ventas y reputación de la tienda.">
+  <title>Gadgetsforall | Comparador de productos AliExpress</title>
+  <meta name="description" content="Gadgetsforall: herramienta personal para comparar productos de AliExpress por precio, valoración, ventas y reputación de la tienda.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; line-height: 1.6; color: #222; }
-    h1 { margin-bottom: 4px; }
-    .sub { color: #666; margin-top: 0; }
-    footer { margin-top: 48px; font-size: 0.85rem; color: #777; }
+    :root {
+      --bg: #050505;
+      --or: #ff6a00;
+      --or2: #ff9d3c;
+      --gr: #39ff9c;
+      --pu: #8b3dff;
+      --red: #ff2a2a;
+      --dim: #7a4012;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--or2);
+      font-family: "Share Tech Mono", "Consolas", "Courier New", monospace;
+      line-height: 1.65;
+      background:
+        linear-gradient(rgba(255,106,0,.05) 1px, transparent 1px) 0 0 / 100% 32px,
+        linear-gradient(90deg, rgba(255,106,0,.05) 1px, transparent 1px) 0 0 / 32px 100%,
+        radial-gradient(ellipse at top, #1a0b00 0%, var(--bg) 60%);
+    }
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,.25) 0 1px, transparent 1px 3px);
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; position: relative; z-index: 1; }
+    .stripe {
+      height: 14px;
+      background: repeating-linear-gradient(-45deg, var(--or) 0 12px, #000 12px 24px);
+      border: 1px solid var(--or);
+    }
+    .topbar {
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+      font-size: .8rem; color: var(--dim); letter-spacing: .15em;
+      padding: 10px 0;
+    }
+    .online { color: var(--gr); text-shadow: 0 0 8px var(--gr); animation: blink 1.6s steps(2, start) infinite; }
+    @keyframes blink { 50% { opacity: .35; } }
+    @media (prefers-reduced-motion: reduce) { .online { animation: none; } }
+    header.hero {
+      border: 2px solid var(--or);
+      padding: 28px 22px;
+      margin: 10px 0 28px;
+      clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
+      background: linear-gradient(135deg, rgba(255,106,0,.12), transparent 60%);
+    }
+    h1 {
+      font-family: "Orbitron", "Share Tech Mono", sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      letter-spacing: .12em;
+      margin: 0;
+      color: var(--or);
+      text-shadow: 0 0 14px rgba(255,106,0,.6);
+    }
+    .sub { margin: 6px 0 0; color: var(--gr); letter-spacing: .2em; font-size: .9rem; }
+    section {
+      border: 1px solid var(--or);
+      margin: 0 0 24px;
+      position: relative;
+      padding: 26px 20px 18px;
+    }
+    section::before {
+      content: attr(data-label);
+      position: absolute; top: -12px; left: 14px;
+      background: var(--bg);
+      padding: 0 10px;
+      color: var(--gr);
+      font-size: .8rem;
+      letter-spacing: .2em;
+    }
+    h2 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: .15em;
+      color: var(--or);
+      margin: 0 0 10px;
+      text-transform: uppercase;
+    }
+    p { margin: 0 0 10px; }
+    ol { list-style: none; counter-reset: step; padding: 0; margin: 0; }
+    ol li {
+      counter-increment: step;
+      border-left: 3px solid var(--pu);
+      padding: 6px 0 6px 14px;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, rgba(139,61,255,.12), transparent);
+    }
+    ol li::before {
+      content: counter(step, decimal-leading-zero) " //";
+      color: var(--gr);
+      margin-right: 8px;
+    }
+    .warn {
+      border: 1px solid var(--red);
+      color: var(--red);
+      padding: 10px 14px;
+      font-size: .85rem;
+      letter-spacing: .08em;
+    }
+    footer { margin-top: 36px; font-size: .75rem; color: var(--dim); text-align: center; }
   </style>
 </head>
 <body>
-  <h1>Comparador de productos AliExpress</h1>
-  <p class="sub">Herramienta personal para elegir mejor qué comprar</p>
-  <h2>¿Qué es este sitio?</h2>
-  <p>Es un proyecto personal que compara productos de AliExpress para encontrar la mejor opción según precio, valoración de los compradores, cantidad de ventas y antigüedad de la tienda.</p>
-  <h2>¿Cómo funciona?</h2>
-  <ul>
-    <li>Se parte de una lista de productos que quiero comprar.</li>
-    <li>Se buscan opciones equivalentes en AliExpress.</li>
-    <li>Se ordenan con un puntaje que penaliza tiendas nuevas, pocas ventas y malas calificaciones.</li>
-    <li>Se revisa el costo de envío solo en las mejores candidatas.</li>
-  </ul>
-  <h2>Contacto</h2>
-  <p>Proyecto personal sin fines comerciales. Ubicación: Chile.</p>
-  <footer>© 2026 Comparador de productos. Todos los nombres y marcas pertenecen a sus respectivos dueños.</footer>
+  <div class="wrap">
+    <div class="stripe"></div>
+    <div class="topbar">
+      <span>GADGETSFORALL // SISTEMA DE COMPARACIÓN</span>
+      <span>ESTADO: <span class="online">EN LÍNEA</span></span>
+    </div>
+
+    <header class="hero">
+      <h1>GADGETSFORALL</h1>
+      <p class="sub">COMPARADOR DE PRODUCTOS ALIEXPRESS</p>
+    </header>
+
+    <section data-label="SECTOR 01 // PROPÓSITO">
+      <h2>¿Qué es este sitio?</h2>
+      <p>Gadgetsforall es un proyecto personal que compara productos de AliExpress para encontrar la mejor opción según precio, valoración de los compradores, cantidad de ventas y antigüedad de la tienda.</p>
+    </section>
+
+    <section data-label="SECTOR 02 // PROCEDIMIENTO">
+      <h2>¿Cómo funciona?</h2>
+      <ol>
+        <li>Se parte de una lista de productos que quiero comprar.</li>
+        <li>Se buscan opciones equivalentes en AliExpress.</li>
+        <li>Se ordenan con un puntaje que penaliza tiendas nuevas, pocas ventas y malas calificaciones.</li>
+        <li>Se revisa el costo de envío solo en las mejores candidatas.</li>
+      </ol>
+    </section>
+
+    <section data-label="SECTOR 03 // CONTACTO">
+      <h2>Información</h2>
+      <p>Proyecto personal sin fines comerciales. Ubicación: Chile.</p>
+      <p class="warn">AVISO: algunos enlaces de este sitio podrían ser de afiliado. No afecta el precio que pagas.</p>
+    </section>
+
+    <div class="stripe"></div>
+    <footer>© 2026 GADGETSFORALL. Todos los nombres y marcas pertenecen a sus respectivos dueños.</footer>
+  </div>
 </body>
 </html>
